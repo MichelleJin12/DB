@@ -49,7 +49,7 @@
     ```sql
     docker exec -it spider_db bash
     find / -name install_spider.sql
-
+    #/usr/share/mysql/install_spider.sql
     mysql -u root -p < /usr/share/mysql/install_spider.sql
     > sql
     ```
@@ -142,7 +142,7 @@
 
 - 1-7. shard_db1에서 계정 생성
 
-    ```sql
+    ```sql  ###오타
     # shard_db1 접속
 
     docker exec -it shard_db1 bash
@@ -237,16 +237,16 @@
     use test;
 
     # 10번 실행
-    insert into shardTest(name) values('aaaaa'); 
-    insert into shardTest(name) values('aaaaa'); 
-    insert into shardTest(name) values('aaaaa'); 
-    insert into shardTest(name) values('aaaaa'); 
-    insert into shardTest(name) values('aaaaa'); 
-    insert into shardTest(name) values('aaaaa'); 
-    insert into shardTest(name) values('aaaaa'); 
-    insert into shardTest(name) values('aaaaa'); 
-    insert into shardTest(name) values('aaaaa'); 
-    insert into shardTest(name) values('aaaaa'); 
+    insert into shardTest(name) values('aaaaa');
+    insert into shardTest(name) values('aaaaa');
+    insert into shardTest(name) values('aaaaa');
+    insert into shardTest(name) values('aaaaa');
+    insert into shardTest(name) values('aaaaa');
+    insert into shardTest(name) values('aaaaa');
+    insert into shardTest(name) values('aaaaa');
+    insert into shardTest(name) values('aaaaa');
+    insert into shardTest(name) values('aaaaa');
+    insert into shardTest(name) values('aaaaa');
 
     select * from shardTest;
     ```
@@ -377,8 +377,8 @@
     OPTIONS(
      HOST '172.17.0.3',
      DATABASE 'employees',
-     USER 'junsu_spider',
-     PASSWORD 'junsuhwang',
+     USER 'sh_spider',
+     PASSWORD 'seongheejin',
      PORT 3306
     );
     ```
@@ -391,8 +391,8 @@
     OPTIONS(
      HOST '172.17.0.4',
      DATABASE 'employees',
-     USER 'junsu_spider',
-     PASSWORD 'junsuhwang',
+     USER 'sh_spider',
+     PASSWORD 'seongheejin',
      PORT 3306
     );
     ```
@@ -406,8 +406,8 @@
     +---------------------+------------+-----------+----------+------------+------+--------+---------+-------+
     | shard_db1           | 172.17.0.3 | test      | spider   | 12121212   | 3306 |        | mysql   |       |
     | shard_db2           | 172.17.0.4 | test      | spider   | 12121212   | 3306 |        | mysql   |       |
-    | employees_shard_db1 | 172.17.0.3 | employees | spider   | junsuhwang | 3306 |        | mysql   |       |
-    | employees_shard_db2 | 172.17.0.4 | employees | spider   | junsuhwang | 3306 |        | mysql   |       |
+    | employees_shard_db1 | 172.17.0.3 | employees | spider   | seongheejin | 3306 |        | mysql   |       |
+    | employees_shard_db2 | 172.17.0.4 | employees | spider   | seongheejin | 3306 |        | mysql   |       |
     +---------------------+------------+-----------+----------+------------+------+--------+---------+-------+
 
     # 삭제
@@ -421,8 +421,8 @@
     # spider_db에서
 
     create database employees;
-    create user 'junsu_spider'@'%' identified by 'junsuhwang';
-    grant all on *.* to 'junsu_spider'@'%' with grant option;
+    create user 'sh_spider'@'%' identified by 'seongheejin';
+    grant all on *.* to 'sh_spider'@'%' with grant option;
     flush privileges;
     ```
 
@@ -464,8 +464,8 @@
     # shard_db1
 
     create database employees;
-    create user 'junsu_spider'@'%' identified by 'junsuhwang';
-    grant all on *.* to 'junsu_spider'@'%' with grant option;
+    create user 'sh_spider'@'%' identified by 'seongheejin';
+    grant all on *.* to 'sh_spider'@'%' with grant option;
     flush privileges;
     ```
 
@@ -509,8 +509,8 @@
     # shard_db2
 
     create database employees;
-    create user 'junsu_spider'@'%' identified by 'junsuhwang';
-    grant all on *.* to 'junsu_spider'@'%' with grant option;
+    create user 'sh_spider'@'%' identified by 'seongheejin';
+    grant all on *.* to 'sh_spider'@'%' with grant option;
     flush privileges;
     ```
 

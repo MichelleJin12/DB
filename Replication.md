@@ -8,10 +8,10 @@
     ```
 
 - 1-1. 우분투 로컬에 cnf 파일 만들기
-
+- .cnf 파일은 mysql이 사용하는 config 파일임
     ```bash
     vim /home/ubuntu/master/config_file.cnf
-    > 
+    >
     [mysqld]
     log-bin=mysql-bin
     server-id=1
@@ -24,18 +24,23 @@
     ```
 
 - 1-2. docker run
+- -d
+- -p 옵션은 호스트 포트와 컨테이너 포트를 연결시키는 것
+- -e
+- -v
 
+-
     ```bash
     # master
     docker run -d --restart=always -p 3306:3306 \
     -e MYSQL_ROOT_PASSWORD=sql \
-    -v /home/ubuntu/master/:/etc/mysql/conf.d \
+    -v /Users/jinseonghee/Desktop/2021_1/DB/master/:/etc/mysql/conf.d \
     --name=mysql-master mysql:5.6
 
     # slave
     docker run -d --restart=always -p 3307:3306 \
     -e MYSQL_ROOT_PASSWORD=sql \
-    -v /home/ubuntu/slave/:/etc/mysql/conf.d \
+    -v /Users/jinseonghee/Desktop/2021_1/DB/slave/:/etc/mysql/conf.d \
     --name=mysql-slave mysql:5.6
     ```
 
@@ -120,12 +125,12 @@
     ```sql
     # slave에서 진행
 
-    CHANGE MASTER TO 
+    CHANGE MASTER TO
     MASTER_HOST='172.17.0.2', # master ip
     MASTER_USER='repluser', # master에서 등록한 user
     MASTER_PASSWORD='replpw', # master에서 등록한 pw
     MASTER_LOG_FILE='mysql-bin.000004', # show master status\G에서 나온 값
-    MASTER_LOG_POS=120; # show master status\G에서 나온 값
+    MASTER_LOG_POS=419; # show master status\G에서 나온 값
     ```
 
     ```sql

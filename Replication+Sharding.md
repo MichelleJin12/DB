@@ -16,12 +16,13 @@
         mkdir shard_master_db1
         cd shard_master_db1
         vim config_file.cnf
-        > 
+        >
         [mysqld]
         log-bin=mysql-bin
         server-id=1
 
-        cat /home/ubuntu/shard_master_db1/config_file.cnf
+        <!-- cat /home/ubuntu/shard_master_db1/config_file.cnf -->
+        cat /Users/jinseonghee/Desktop/2021_1/DB/shard_master_db1/config_file.cnf
         ```
 
         ```bash
@@ -32,12 +33,13 @@
         cd shard_master_db2
 
         vim config_file.cnf
-        > 
+        >
         [mysqld]
         log-bin=mysql-bin
         server-id=2
 
-        cat /home/ubuntu/shard_master_db2/config_file.cnf
+        <!-- cat /home/ubuntu/shard_master_db2/config_file.cnf -->
+        cat /Users/jinseonghee/Desktop/2021_1/DB/shard_master_db2/config_file.cnf
         ```
 
         ```bash
@@ -53,7 +55,8 @@
         server-id=3
         read_only=1
 
-        cat /home/ubuntu/shard_slave_db1/config_file.cnf
+        <!-- cat /home/ubuntu/shard_slave_db1/config_file.cnf -->
+        cat /Users/jinseonghee/Desktop/2021_1/DB/shard_slave_db1/config_file.cnf
         ```
 
         ```bash
@@ -69,7 +72,8 @@
         server-id=4
         read_only=1
 
-        cat /home/ubuntu/shard_slave_db2/config_file.cnf
+        <!-- cat /home/ubuntu/shard_slave_db2/config_file.cnf -->
+        cat /Users/jinseonghee/Desktop/2021_1/DB/shard_slave_db2/config_file.cnf
         ```
 
     - 1-2. docker run (총 5개)
@@ -93,7 +97,7 @@
           --restart=always \
           -p 3307:3306 \
           -e MYSQL_ROOT_PASSWORD=sql \
-          -v /home/ubuntu/shard_master_db1/:/etc/mysql/conf.d \
+          -v /Users/jinseonghee/Desktop/2021_1/DB/shard_master_db1/:/etc/mysql/conf.d \
           --name=shard_master_db1 \
           mariadb:10.1
 
@@ -102,7 +106,7 @@
           --restart=always \
           -p 3308:3306 \
           -e MYSQL_ROOT_PASSWORD=sql \
-          -v /home/ubuntu/shard_master_db2/:/etc/mysql/conf.d \
+          -v //Users/jinseonghee/Desktop/2021_1/DB/shard_master_db2/:/etc/mysql/conf.d \
           --name=shard_master_db2 \
           mariadb:10.1
 
@@ -111,7 +115,7 @@
           --restart=always \
           -p 3309:3306 \
           -e MYSQL_ROOT_PASSWORD=sql \
-          -v /home/ubuntu/shard_slave_db1/:/etc/mysql/conf.d \
+          -v /Users/jinseonghee/Desktop/2021_1/DB/shard_slave_db1/:/etc/mysql/conf.d \
           --name=shard_slave_db1 \
           mariadb:10.1
 
@@ -120,7 +124,7 @@
           --restart=always \
           -p 3310:3306 \
           -e MYSQL_ROOT_PASSWORD=sql \
-          -v /home/ubuntu/shard_slave_db2/:/etc/mysql/conf.d \
+          -v /Users/jinseonghee/Desktop/2021_1/DB/shard_slave_db2/:/etc/mysql/conf.d \
           --name=shard_slave_db2 \
           mariadb:10.1
 
@@ -130,7 +134,7 @@
         ```bash
         docker exec -it shard_master_db1 bash
         cat /etc/mysql/conf.d/config_file.cnf
-        exit 
+        exit
 
         docker exec -it shard_master_db2 bash
         cat /etc/mysql/conf.d/config_file.cnf
@@ -202,8 +206,8 @@
         OPTIONS(
          HOST '172.17.0.3',
          DATABASE 'employees',
-         USER 'junsu_spider',
-         PASSWORD 'junsuhwang',
+         USER 'seonghee_spider',
+         PASSWORD 'seongheejin',
          PORT 3306
         );
         ```
@@ -217,8 +221,8 @@
         OPTIONS(
          HOST '172.17.0.4',
          DATABASE 'employees',
-         USER 'junsu_spider',
-         PASSWORD 'junsuhwang',
+         USER 'seonghee_spider',
+         PASSWORD 'seongheejin',
          PORT 3306
         );
         ```
@@ -230,8 +234,8 @@
         +----------------------------+------------+-----------+--------------+------------+------+--------+---------+-------+
         | Server_name                | Host       | Db        | Username     | Password   | Port | Socket | Wrapper | Owner |
         +----------------------------+------------+-----------+--------------+------------+------+--------+---------+-------+
-        | employees_shard_master_db1 | 172.17.0.3 | employees | junsu_spider | junsuhwang | 3306 |        | mysql   |       |
-        | employees_shard_master_db2 | 172.17.0.4 | employees | junsu_spider | junsuhwang | 3306 |        | mysql   |       |
+        | employees_shard_master_db1 | 172.17.0.3 | employees | seonghee_spider | seongheejin | 3306 |        | mysql   |       |
+        | employees_shard_master_db2 | 172.17.0.4 | employees | seonghee_spider | seongheejin | 3306 |        | mysql   |       |
         +----------------------------+------------+-----------+--------------+------------+------+--------+---------+-------+
 
         # 삭제
@@ -245,8 +249,8 @@
         # spider_db에서 추가
 
         create database employees;
-        create user 'junsu_spider'@'%' identified by 'junsuhwang';
-        grant all on *.* to 'junsu_spider'@'%' with grant option;
+        create user 'seonghee_spider'@'%' identified by 'seongheejin';
+        grant all on *.* to 'seonghee_spider'@'%' with grant option;
         flush privileges;
         ```
 
@@ -349,7 +353,7 @@
         ```sql
         # 172.17.0.3 -> shard_master_db1 ip
 
-        CHANGE MASTER TO 
+        CHANGE MASTER TO
         MASTER_HOST='172.17.0.3',
         MASTER_USER='repluserOne',
         MASTER_PASSWORD='replpwOne',
@@ -444,7 +448,7 @@
         ```
 
         ```sql
-        CHANGE MASTER TO 
+        CHANGE MASTER TO
         MASTER_HOST='172.17.0.4',
         MASTER_USER='repluserTwo',
         MASTER_PASSWORD='replpwTwo',
@@ -475,8 +479,8 @@
         # shard_master_db1에서
 
         create database employees;
-        create user 'junsu_spider'@'%' identified by 'junsuhwang';
-        grant all on *.* to 'junsu_spider'@'%' with grant option;
+        create user 'seonghee_spider'@'%' identified by 'seongheejin';
+        grant all on *.* to 'seonghee_spider'@'%' with grant option;
         flush privileges;
         ```
 
@@ -520,8 +524,8 @@
         # shard_master_db2에서
 
         create database employees;
-        create user 'junsu_spider'@'%' identified by 'junsuhwang';
-        grant all on *.* to 'junsu_spider'@'%' with grant option;
+        create user 'seonghee_spider'@'%' identified by 'seongheejin';
+        grant all on *.* to 'seonghee_spider'@'%' with grant option;
         flush privileges;
         ```
 
@@ -749,12 +753,12 @@
         	long start = System.currentTimeMillis();
 
         	String filePath = "/employees_db/load_employees.dump";
-        	Connection conn = null; 
+        	Connection conn = null;
         	PreparedStatement pstmt = null;
         	String dbURL = "jdbc:mysql://172.17.0.8:3306/employees";
         	String id = "root";
         	String pw = "sql";
-        	try { 
+        	try {
         		FileReader fr = new FileReader(filePath);
         		BufferedReader br = new BufferedReader(fr);
         		String line = null;
@@ -767,11 +771,11 @@
         			insertSQL = line;
         			// out.write(insertSQL);
         			pstmt = conn.prepareStatement(insertSQL);
-        			pstmt.executeUpdate();		
+        			pstmt.executeUpdate();
         		}
             pstmt.close();
             long end = System.currentTimeMillis();
-        		
+
         		out.write("Record Add Success" + "<br>");
 
             out.write("OneDB insert time: " + (end - start)/1000.0);
@@ -794,12 +798,12 @@
         	long start = System.currentTimeMillis();
 
         	String filePath = "/employees_db/load_employees.dump";
-        	Connection conn = null; 
+        	Connection conn = null;
         	PreparedStatement pstmt = null;
         	String dbURL = "jdbc:mysql://172.17.0.2:3306/employees";
         	String id = "root";
         	String pw = "sql";
-        	try { 
+        	try {
         		FileReader fr = new FileReader(filePath);
         		BufferedReader br = new BufferedReader(fr);
         		String line = null;
@@ -812,7 +816,7 @@
         			insertSQL = line;
         			// out.write(insertSQL);
         			pstmt = conn.prepareStatement(insertSQL);
-        			pstmt.executeUpdate();		
+        			pstmt.executeUpdate();
         		}
             pstmt.close();
             long end = System.currentTimeMillis();
@@ -847,12 +851,12 @@
                     <td>first_name</td>
                     <td>last_name</td>
                     <td>gender</td>
-                    <td>hire_date</td>         
+                    <td>hire_date</td>
               </tr>
-         
+
         	long start = System.currentTimeMillis();
 
-        	Connection conn = null; 
+        	Connection conn = null;
         	PreparedStatement pstmt = null;
         	ResultSet rs = null;
 
@@ -861,7 +865,7 @@
         	String pw = "sql";
           String selectSQL = "SELECT * FROM shardEmployees ORDER BY RAND() LIMIT 20000;";
 
-        	try { 
+        	try {
             Class.forName("com.mysql.jdbc.Driver");
         		conn = DriverManager.getConnection(dbURL, id, pw);
 
@@ -918,12 +922,12 @@
                     <td>first_name</td>
                     <td>last_name</td>
                     <td>gender</td>
-                    <td>hire_date</td>         
+                    <td>hire_date</td>
               </tr>
-         
+
         	long start = System.currentTimeMillis();
 
-        	Connection conn = null; 
+        	Connection conn = null;
         	PreparedStatement pstmt = null;
         	ResultSet rs = null;
 
@@ -932,7 +936,7 @@
         	String pw = "sql";
           String selectSQL = "SELECT * FROM shardEmployees ORDER BY RAND() LIMIT 20000;";
 
-        	try { 
+        	try {
             Class.forName("com.mysql.jdbc.Driver");
         		conn = DriverManager.getConnection(dbURL, id, pw);
 
